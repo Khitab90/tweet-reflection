@@ -53,7 +53,7 @@ export default function AppHeader({ activeNode, running, curIter, maxIter }: Pro
         </div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
           <div style={{ fontWeight: 600, letterSpacing: "0.4px", fontSize: 15 }}>
-            reflect<span style={{ color: "#2dd4a7" }}>.</span>agent
+            tweet<span style={{ color: "#2dd4a7" }}>.</span>reflection
           </div>
           <div style={{
             color: "#525c6b", fontSize: 11.5, letterSpacing: "0.3px",

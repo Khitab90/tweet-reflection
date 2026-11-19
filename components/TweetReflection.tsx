@@ -22,7 +22,7 @@ interface AgentState {
   errorMessage: string | null;
 }
 
-export default function TweetAgent() {
+export default function TweetReflection() {
   const [state, setState] = useState<AgentState>({
     topic: "",
     tone: "Punchy",

@@ -1,5 +1,5 @@
-import TweetAgent from "@/components/TweetAgent";
+import TweetReflection from "@/components/TweetReflection";
 
 export default function Home() {
-  return <TweetAgent />;
+  return <TweetReflection />;
 }

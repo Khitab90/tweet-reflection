@@ -9,8 +9,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "reflect.agent — tweet generator",
-  description: "LangGraph reflection agent for writing viral tweets",
+  title: "tweet.reflection — tweet generator",
+  description: "LangGraph reflection loop for writing viral tweets",
 };
 
 export default function RootLayout({

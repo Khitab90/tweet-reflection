@@ -1,12 +1,12 @@
-# reflect.agent - Tweet Reflection Agent
+# tweet.reflection
 
-A full-stack AI agent that iteratively drafts, critiques, and refines tweets using a LangGraph reflection loop. Enter a topic, pick a tone and iteration count, and the agent runs autonomously - each iteration generating a tweet and critiquing it - until the final polished post lands in the output panel.
+A full-stack app that iteratively drafts, critiques, and refines tweets using a LangGraph reflection loop. Enter a topic, pick a tone and iteration count, and the loop runs automatically - each iteration generating a tweet and critiquing it - until the final polished post lands in the output panel.
 
 ---
 
-## What the Agent Does
+## What It Does
 
-The agent takes a topic and tone as input and runs N user-configured iterations. Each iteration:
+It takes a topic and tone as input and runs N user-configured iterations. Each iteration:
 
 1. **Generates** a tweet (under 280 characters, in the chosen tone)
 2. **Reflects** on it - producing 3 short, actionable critique bullets focused on hook, clarity, and engagement
@@ -46,8 +46,8 @@ start → generate → reflect → router → generate → reflect → router �
 |-------|-----------|
 | Frontend | Next.js 16 (App Router), TypeScript, IBM Plex Mono |
 | Styling | Inline styles, CSS animations (`globals.css`), no component library |
-| Agent framework | LangGraph (`@langchain/langgraph`) - TypeScript |
-| LLM | Groq - `llama-3.3-70b-versatile` (free tier) |
+| Orchestration | LangGraph (`@langchain/langgraph`) - TypeScript |
+| LLM | Groq - `openai/gpt-oss-120b` (free tier) |
 | LLM client | `@langchain/groq`, `@langchain/core` |
 | Streaming | Server-Sent Events (SSE) via Next.js Route Handler |
 | Testing | Vitest, `@vitest/coverage-v8` |
@@ -60,7 +60,7 @@ start → generate → reflect → router → generate → reflect → router �
 ## Project Structure
 
 ```
-tweet-reflection-agent/
+tweet-reflection/
 ├── .github/
 │   ├── dependabot.yml           # Weekly dependency updates (react/react-dom and
 │   │                            # @langchain/* grouped to update in lockstep)
@@ -69,13 +69,13 @@ tweet-reflection-agent/
 │       └── codeql.yml           # JS/TS SAST scanning
 ├── app/
 │   ├── layout.tsx               # IBM Plex Mono font, metadata
-│   ├── page.tsx                 # Entry point → renders <TweetAgent />
+│   ├── page.tsx                 # Entry point → renders <TweetReflection />
 │   ├── globals.css              # Animations: blink, fadeUp, glowPulse, spinSlow
 │   └── api/agent/
 │       ├── route.ts             # POST endpoint - validation, rate limiting, streams SSE
 │       └── route.test.ts        # Validation + error-path tests
 ├── components/
-│   ├── TweetAgent.tsx           # Root state container, SSE consumer
+│   ├── TweetReflection.tsx           # Root state container, SSE consumer
 │   ├── AppHeader.tsx            # Sticky header: branding, status pill, iter counter
 │   ├── LeftPanel.tsx            # Prompt textarea, iterations stepper, tone selector, run button, error banner
 │   ├── RunLog.tsx               # Timeline of generate/reflect steps with streaming
@@ -190,8 +190,8 @@ CI runs lint + `test:coverage` + build on every push/PR to `main` and uploads co
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/Khitab90/tweet-reflection-agent.git
-cd tweet-reflection-agent
+git clone https://github.com/Khitab90/tweet-reflection.git
+cd tweet-reflection
 npm install
 ```
 
