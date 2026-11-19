@@ -1,5 +1,7 @@
 "use client";
 
+import { countWords, MIN_TOPIC_WORDS, TOPIC_TOO_SHORT_MESSAGE } from "@/lib/topic";
+
 const TONES = ["Punchy", "Professional", "Witty", "Bold"] as const;
 export type Tone = typeof TONES[number];
 
@@ -20,7 +22,8 @@ export default function LeftPanel({
   topic, tone, maxIter, running,
   onTopicChange, onToneChange, onIterChange, onRun, onKeyDown, errorMessage,
 }: Props) {
-  const canRun = !running && topic.trim().length > 0;
+  const topicTooShort = topic.trim().length > 0 && countWords(topic) < MIN_TOPIC_WORDS;
+  const canRun = !running && countWords(topic) >= MIN_TOPIC_WORDS;
 
   return (
     <aside className="sticky-panel" style={{
@@ -51,6 +54,11 @@ export default function LeftPanel({
             lineHeight: 1.55, padding: "12px 13px",
           }}
         />
+        {topicTooShort && (
+          <div role="alert" style={{ marginTop: 9, color: "#f0746a", fontSize: 12.5, lineHeight: 1.5 }}>
+            {TOPIC_TOO_SHORT_MESSAGE}
+          </div>
+        )}
       </section>
 
       {/* CONFIG */}
@@ -131,7 +139,7 @@ export default function LeftPanel({
           transition: "opacity .15s",
         }}
       >
-        {running ? "running…" : "▶  run agent"}
+        {running ? "running…" : "▶  run reflection"}
       </button>
 
       {errorMessage && (

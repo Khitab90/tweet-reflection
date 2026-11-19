@@ -79,6 +79,13 @@ describe("POST /api/agent validation", () => {
     expect(res.status).toBe(400);
   });
 
+  it("returns 400 when topic is fewer than 3 words", async () => {
+    const res = await POST(makeRequest({ topic: "hello there" }));
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.error).toMatch(/at least 3 words/);
+  });
+
   it("returns 400 when topic exceeds 500 characters", async () => {
     const res = await POST(makeRequest({ topic: "a".repeat(501) }));
     expect(res.status).toBe(400);
@@ -89,15 +96,15 @@ describe("POST /api/agent validation", () => {
   it("returns 429 after exceeding the rate limit for one IP", async () => {
     const ip = uniqueIp();
     for (let i = 0; i < 5; i++) {
-      await POST(makeRequest({ topic: "test topic" }, ip));
+      await POST(makeRequest({ topic: "a test topic here" }, ip));
     }
-    const res = await POST(makeRequest({ topic: "test topic" }, ip));
+    const res = await POST(makeRequest({ topic: "a test topic here" }, ip));
     expect(res.status).toBe(429);
     expect(res.headers.get("Retry-After")).not.toBeNull();
   });
 
   it("starts streaming (200, text/event-stream) for a valid request", async () => {
-    const res = await POST(makeRequest({ topic: "valid topic", tone: "Punchy", maxIter: 1 }));
+    const res = await POST(makeRequest({ topic: "a valid topic here", tone: "Punchy", maxIter: 1 }));
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toBe("text/event-stream");
   });
@@ -105,7 +112,7 @@ describe("POST /api/agent validation", () => {
   it("emits an SSE error event (not a thrown exception) when the agent graph fails mid-run", async () => {
     mockInvoke.mockRejectedValueOnce(new Error("Groq API unavailable"));
 
-    const res = await POST(makeRequest({ topic: "valid topic", tone: "Punchy", maxIter: 1 }));
+    const res = await POST(makeRequest({ topic: "a valid topic here", tone: "Punchy", maxIter: 1 }));
     expect(res.status).toBe(200); // headers already sent before the graph runs
 
     const events = await readSseEvents(res);

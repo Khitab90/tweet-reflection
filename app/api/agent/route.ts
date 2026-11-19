@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { buildGraph, AgentEvent } from "@/lib/agent";
 import { HumanMessage } from "@langchain/core/messages";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { countWords, MIN_TOPIC_WORDS, TOPIC_TOO_SHORT_MESSAGE } from "@/lib/topic";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -36,6 +37,9 @@ export async function POST(req: NextRequest) {
   }
   if (topic.length > 500) {
     return new Response(JSON.stringify({ error: "Topic must be under 500 characters." }), { status: 400 });
+  }
+  if (countWords(topic) < MIN_TOPIC_WORDS) {
+    return new Response(JSON.stringify({ error: TOPIC_TOO_SHORT_MESSAGE }), { status: 400 });
   }
 
   const encoder = new TextEncoder();
