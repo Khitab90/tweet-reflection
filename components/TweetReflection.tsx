@@ -6,7 +6,7 @@ import LeftPanel, { Tone } from "./LeftPanel";
 import RunLog, { Step } from "./RunLog";
 import WorkflowGraph from "./WorkflowGraph";
 import FinalPost from "./FinalPost";
-import { countWords, MIN_TOPIC_WORDS } from "@/lib/topic";
+import { topicLength, MIN_TOPIC_CHARS } from "@/lib/topic";
 
 type ActiveNode = "idle" | "generate" | "reflect" | "router" | "end";
 
@@ -60,7 +60,7 @@ export default function TweetReflection() {
   }
 
   const runAgent = useCallback(async () => {
-    if (state.running || countWords(state.topic) < MIN_TOPIC_WORDS) return;
+    if (state.running || topicLength(state.topic) < MIN_TOPIC_CHARS) return;
 
     const { topic, tone, maxIter } = state;
     stepsRef.current = [];

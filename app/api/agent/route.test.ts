@@ -79,11 +79,11 @@ describe("POST /api/agent validation", () => {
     expect(res.status).toBe(400);
   });
 
-  it("returns 400 when topic is fewer than 3 words", async () => {
-    const res = await POST(makeRequest({ topic: "hello there" }));
+  it("returns 400 when topic is shorter than 15 characters", async () => {
+    const res = await POST(makeRequest({ topic: "too short" }));
     expect(res.status).toBe(400);
     const json = await res.json();
-    expect(json.error).toMatch(/at least 3 words/);
+    expect(json.error).toMatch(/at least 15 characters/);
   });
 
   it("returns 400 when topic exceeds 500 characters", async () => {
