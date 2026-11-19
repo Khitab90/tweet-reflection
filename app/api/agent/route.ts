@@ -16,9 +16,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!process.env.GROQ_API_KEY) {
+  if (!process.env.API_KEY) {
     return new Response(
-      JSON.stringify({ error: "Server misconfigured: GROQ_API_KEY is not set." }),
+      JSON.stringify({ error: "Server misconfigured: API_KEY is not set." }),
       { status: 500 }
     );
   }

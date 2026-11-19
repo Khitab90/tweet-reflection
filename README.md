@@ -52,7 +52,7 @@ start → generate → reflect → router → generate → reflect → router �
 | Streaming | Server-Sent Events (SSE) via Next.js Route Handler |
 | Testing | Vitest, `@vitest/coverage-v8` |
 | Linting | ESLint (`eslint-config-next`, `eslint-plugin-security`) |
-| CI/CD | GitHub Actions (lint + test + build), CodeQL, Dependabot |
+| CI/CD | GitHub Actions (lint + test + build), CodeQL |
 | Deployment | Vercel (Node.js runtime, `maxDuration: 60s`) |
 
 ---
@@ -62,8 +62,6 @@ start → generate → reflect → router → generate → reflect → router �
 ```
 tweet-reflection/
 ├── .github/
-│   ├── dependabot.yml           # Weekly dependency updates (react/react-dom and
-│   │                            # @langchain/* grouped to update in lockstep)
 │   └── workflows/
 │       ├── ci.yml               # Lint + test (with coverage) + build on every push/PR
 │       └── codeql.yml           # JS/TS SAST scanning
@@ -159,9 +157,9 @@ The UI shows a live `X / 280` counter that turns red if exceeded.
 
 - **Rate limiting** - `lib/rateLimit.ts` caps each IP to 5 requests/minute on `/api/agent` (in-memory fixed window; sufficient for a single-instance deployment). Exceeding it returns `429` with a `Retry-After` header.
 - **Input validation** - topic is required, capped at 500 characters (server-enforced + client `maxLength`), and malformed JSON bodies return `400` instead of crashing the route.
-- **Fail-fast misconfiguration check** - missing `GROQ_API_KEY` returns a clear `500` instead of a cryptic error surfacing from deep inside the LLM SDK.
+- **Fail-fast misconfiguration check** - missing `API_KEY` returns a clear `500` instead of a cryptic error surfacing from deep inside the LLM SDK.
 - **User-facing error surfacing** - API errors, SSE `error` events, and clipboard-copy failures all show a message in the UI rather than only logging to the console.
-- **GitHub security tooling** - secret scanning + push protection, Dependabot vulnerability alerts and version-update PRs (grouped for `react`/`react-dom` and `@langchain/*` so peer-dependency bumps land together), CodeQL SAST scanning on every push/PR.
+- **GitHub security tooling** - secret scanning + push protection, CodeQL SAST scanning on every push/PR.
 - **Branch protection** - `main` blocks force-pushes and branch deletion.
 
 ---
@@ -204,11 +202,11 @@ cp .env.local.example .env.local
 Edit `.env.local`:
 
 ```
-GROQ_API_KEY=gsk_...
+API_KEY=your-api-key
 NEXT_PUBLIC_TWITTER_HANDLE=you
 ```
 
-Get a free Groq API key at [console.groq.com](https://console.groq.com) - no credit card required.
+`API_KEY` is passed to the LLM client in `lib/agent.ts` (currently Groq). Get a free Groq key at [console.groq.com](https://console.groq.com) - no credit card required. To use another provider, swap the client and model in `lib/agent.ts`.
 
 ### 3. Run
 
@@ -224,7 +222,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 1. Push to GitHub
 2. Import the repo on [vercel.com](https://vercel.com)
-3. Add `GROQ_API_KEY` and `NEXT_PUBLIC_TWITTER_HANDLE` in **Settings → Environment Variables**
+3. Add `API_KEY` and `NEXT_PUBLIC_TWITTER_HANDLE` in **Settings → Environment Variables**
 4. Deploy
 
 The API route uses Node.js runtime with `maxDuration: 60` - the max allowed on Vercel's free Hobby plan - which comfortably covers multi-iteration runs given Groq's response speed.

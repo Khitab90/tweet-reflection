@@ -40,24 +40,24 @@ function makeRequest(body: unknown, ip = uniqueIp()): NextRequest {
   });
 }
 
-const originalApiKey = process.env.GROQ_API_KEY;
+const originalApiKey = process.env.API_KEY;
 
 beforeEach(() => {
-  process.env.GROQ_API_KEY = "test-key";
+  process.env.API_KEY = "test-key";
   mockInvoke.mockReset().mockResolvedValue({});
 });
 
 afterEach(() => {
-  process.env.GROQ_API_KEY = originalApiKey;
+  process.env.API_KEY = originalApiKey;
 });
 
 describe("POST /api/agent validation", () => {
-  it("returns 500 when GROQ_API_KEY is not set", async () => {
-    delete process.env.GROQ_API_KEY;
+  it("returns 500 when API_KEY is not set", async () => {
+    delete process.env.API_KEY;
     const res = await POST(makeRequest({ topic: "hello" }));
     expect(res.status).toBe(500);
     const json = await res.json();
-    expect(json.error).toMatch(/GROQ_API_KEY/);
+    expect(json.error).toMatch(/API_KEY/);
   });
 
   it("returns 400 for malformed JSON body", async () => {

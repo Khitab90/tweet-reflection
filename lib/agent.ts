@@ -39,7 +39,7 @@ export type State = typeof StateAnnotation.State;
 function buildLLM() {
   return new ChatGroq({
     model: 'openai/gpt-oss-120b',
-    apiKey: process.env.GROQ_API_KEY,
+    apiKey: process.env.API_KEY,
     temperature: 0.7,
   });
 }
