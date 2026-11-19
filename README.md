@@ -1,4 +1,4 @@
-# tweet.reflection
+# tweet-reflection
 
 A full-stack app that iteratively drafts, critiques, and refines tweets using a LangGraph reflection loop. Enter a topic, pick a tone and iteration count, and the loop runs automatically - each iteration generating a tweet and critiquing it - until the final polished post lands in the output panel.
 

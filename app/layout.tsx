@@ -9,7 +9,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "tweet.reflection — tweet generator",
+  title: "tweet-reflection — tweet generator",
   description: "LangGraph reflection loop for writing viral tweets",
 };
 

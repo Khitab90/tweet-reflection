@@ -35,7 +35,7 @@ export default function FinalPost({ finalPost, copied, handle, onCopy }: Props) 
               </svg>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 1, minWidth: 0 }}>
-              <span style={{ fontSize: 13, color: "#e9eef4", fontWeight: 600 }}>tweet.reflection</span>
+              <span style={{ fontSize: 13, color: "#e9eef4", fontWeight: 600 }}>tweet-reflection</span>
               <span style={{ fontSize: 11.5, color: "#5a6473" }}>@{handle}</span>
             </div>
             <span style={{ flex: 1 }} />
